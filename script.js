@@ -346,7 +346,7 @@ function tick(timeStamp){
     for(var i = 0; i < emitterList.length; i++){
         var emitter = emitterList[i];
         if(emitter.play){
-            if (timeStamp >= emitter.lastEmission + (emitter.emissionsPerSecond * 1000) + pauseOffset)  {
+            if (timeStamp >= emitter.lastEmission + (1000 / emitter.emissionsPerSecond) + pauseOffset)  {
                 pauseOffset = 0;
                 emitter.emit();
                 emitter.lastEmission = timeStamp;

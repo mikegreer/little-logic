@@ -11,8 +11,7 @@ var emitterList = [{
     'x': 75,
     'y': 225,
     'emissionCount': 0,
-    'emissionsPerSecond': 2,
-    // 'emissionLimit': 2,
+    'emissionsPerSecond': 1,
     'lastEmission': 0,
     'emitPulse': {
         'shape': 'square',
