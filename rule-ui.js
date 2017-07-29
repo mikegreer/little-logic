@@ -54,9 +54,9 @@ function editRule(ruleType, rule, target){
         target.textContent = ruleDirections[newIndex];
     }
     if(ruleType === "sound"){
-        var newIndex = calculateRuleIndex(ruleSounds, target.textContent);
-        rule.playSound = ruleSounds[newIndex];
-        target.textContent = ruleSounds[newIndex];
+        var newIndex = calculateRuleIndex(levelSounds, target.textContent);
+        rule.playSound = levelSounds[newIndex];
+        target.textContent = levelSounds[newIndex];
     }
 }
 

@@ -3,7 +3,7 @@ var ruleColors = ['red', 'blue'];
 var ruleShapes = ['circle','square'];
 var ruleDirections = ['N','NE','E','SE', 'S', 'SW', 'W', 'NW'];
 //var ruleSounds = ['bass', 'snare', 'tom', 'cymbal', 'hat-c-1'];
-var ruleSounds = ['hat-c-1', 'hat-c-2', 'hat-c-3', 'hat-c-4', 'hat-c-5', 'hat-c-6', 'cymbal']
+var levelSounds = ['pulse-1', 'pulse-2', 'pulse-3', 'pulse-4', 'pulse-5', 'pulse-6', 'pulse-7', 'pulse-8', 'pulse-9', 'pulse-10']
 var newRules = false;
 
 var emitterList = [{
@@ -68,14 +68,14 @@ var gateList = [
                 'ifColor': 'red',
                 'ifShape': 'circle',
                 'setDirection': 'SE',
-                'playSound': 'hat-c-1'
+                'playSound': 'pulse-1'
             },
             {
                 'ruleId': 1,
                 'ifColor': 'blue',
                 'ifShape': 'square',
                 'setDirection': 'SW',
-                'playSound': 'hat-c-1'
+                'playSound': 'pulse-10'
             }
         ],
         'currentCollisions': [],
@@ -94,7 +94,7 @@ var gateList = [
                 'ifShape': 'square',
                 'setDirection': 'N',
                 'turnBy': 45,
-                'playSound': 'hat-c-1'
+                'playSound': 'pulse-2'
             }
         ],
         'currentCollisions': [],
@@ -113,7 +113,7 @@ var gateList = [
                 'ifShape': 'square',
                 'setDirection': 'SE',
                 'turnBy': 45,
-                'playSound': 'hat-c-1'
+                'playSound': 'pulse-3'
             }
         ],
         'currentCollisions': [],

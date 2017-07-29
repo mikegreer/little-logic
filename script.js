@@ -38,28 +38,44 @@ var gameSounds = [
         'url': './assets/cymbal-4.wav'
     },
     {
-        'name': 'hat-c-1',
-        'url': './assets/HatClosedAttack1.wav'
+        'name': 'pulse-1',
+        'url': './assets/pulse-1.wav'
     },
     {
-        'name': 'hat-c-2',
-        'url': './assets/HatClosedAttack2.wav'
+        'name': 'pulse-2',
+        'url': './assets/pulse-2.wav'
     },
     {
-        'name': 'hat-c-3',
-        'url': './assets/HatClosedAttack3.wav'
+        'name': 'pulse-3',
+        'url': './assets/pulse-3.wav'
     },
     {
-        'name': 'hat-c-4',
-        'url': './assets/HatClosedAttack4.wav'
+        'name': 'pulse-4',
+        'url': './assets/pulse-4.wav'
     },
     {
-        'name': 'hat-c-5',
-        'url': './assets/HatClosedAttack5.wav'
+        'name': 'pulse-5',
+        'url': './assets/pulse-5.wav'
     },
     {
-        'name': 'hat-c-6',
-        'url': './assets/HatClosedAttack6.wav'
+        'name': 'pulse-6',
+        'url': './assets/pulse-6.wav'
+    },
+    {
+        'name': 'pulse-7',
+        'url': './assets/pulse-7.wav'
+    },
+    {
+        'name': 'pulse-8',
+        'url': './assets/pulse-8.wav'
+    },
+    {
+        'name': 'pulse-9',
+        'url': './assets/pulse-9.wav'
+    },
+    {
+        'name': 'pulse-10',
+        'url': './assets/pulse-10.wav'
     }
 ];
 function soundToBuffer(soundFile, index){
@@ -79,6 +95,7 @@ function soundToBuffer(soundFile, index){
 for(var i = 0; i < gameSounds.length; i++){
     soundToBuffer(gameSounds[i].url, i);
 }
+
 function playSample(sampleName){
     for(var i = 0; i < gameSounds.length; i++){
         if(gameSounds[i].name === sampleName){
