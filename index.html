@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <style>
+            body{
+                font-family: "europa";
+                margin: 0;
+                height: 100vh;
+                background-color: #ecf0f1;
+            }
+            .wrapper{
+                position: relative;
+                width: 500px;
+                height: 500px;
+            }
+            .noselect {
+              -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none; /* Safari */
+                 -khtml-user-select: none; /* Konqueror HTML */
+                   -moz-user-select: none; /* Firefox */
+                    -ms-user-select: none; /* Internet Explorer/Edge */
+                        user-select: none; /* Non-prefixed version, currently
+                                              supported by Chrome and Opera */
+            }
+            .container{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                margin-top: -4vh;
+            }
+            /*.wrapper{
+                position: relative;
+                width: 1000px;
+            }*/
+            #rules{
+                position: absolute;
+            }
+            #gate-rules{
+                position: relative;
+                width: 500px;
+                height: 500px;
+                font-size: 22px;
+                color: #fff;
+                font-weight: regular;
+                box-sizing: border-box;
+                padding: 30px 40px 40px 40px;
+                line-height: 150%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            .color, .shape, .direction, .sound{
+                cursor: pointer;
+                border-width: 0 0 4px 0;
+                border-style: dotted;
+                border-color: #ff0000;
+                border-image-source: url('assets/dots.svg');
+                border-image-slice: 33% 33%;
+                border-image-repeat: round;
+            }
+            .ruleContainer{
+                padding-left: 30px;
+            }
+            .directionContainer, .soundContainer{
+                margin-left: 30px;
+            }
+            .newrule{
+                margin: 10px 0 20px 30px;
+            }
+            .newrulebtn{
+                padding: 6px 12px;
+                border-radius: 4px;
+                border: 1px solid #ff00ff;
+                display: inline-block;
+            }
+            .newrulebtn:hover{
+                background: #ff00ff;
+                cursor: pointer;
+                color: #fff;
+            }
+            .close-btn{
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                font-size: 28px;
+                padding: 20px;
+                cursor: pointer;
+            }
+            /*@media (max-width : 1000px) {
+                body{
+                    display: block;
+                }
+                .wrapper{
+                    position: relative;
+                    width: 500px;
+                    height: 500px;
+                }
+                #gate-rules{
+                    position: absolute;
+                }
+                #rules{
+                    position: absolute;
+                    width: auto;
+                    height: auto;
+                }
+            }*/
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="wrapper">
+                <div id="rules" class="noselect">
+                    <span id="gate-rules">
+                        <span class="close-btn">×</span>
+                        <span>on hit {</span>
+                        <span id="rule-container"></span>
+                        <div class="newrule"><span class="newrulebtn">+ new rule</span><br></div>
+                        }
+                    </span>
+                </div>
+                <canvas id="logic"></canvas>
+            </div>
+        </div>
+        <script src="https://use.typekit.net/avs8fci.js"></script>
+        <script>try{Typekit.load({ async: true });}catch(e){}</script>
+        <!-- this works with html files (using script tag) <link rel="import" href="level-3.html"> -->
+        <script type="text/javascript" src="level-1.js"></script>
+        <script type="text/javascript" src="script.js"></script>
+        <script type="text/javascript" src="rule-ui.js"></script>
+    </body>
+</html>

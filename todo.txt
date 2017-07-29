@@ -1,0 +1,33 @@
+//rules for changing dx/y as well as setting (+1, -1 etc)
+//define level loading: nodes, pulses, goals, color and shapes lists for level
+//new rule click
+//rules need to visually show their criteria
+//add blocker list and collision tests
+//click to edit goals logic
+//split out edit panel logic into separate file
+//toggle for bounds collision
+//different sounds for: pulse created, hit gate, goal match state.
+
+**level 1**
+circle firing left to right through gate and off screen. Goal directly under gate.
+change gate to turn circles S (or 90°)
+when hit{
+    turn pulse South
+}
+
+**level 2**
+Two gates. As above, but with barrier between gate and goal.
+Turn the circle towards the other gate, then into the goal.
+
+**level 3**
+As level 1, but with two goals. One red, beneath the gate, one blue above.
+when hit {
+    if pulse is red {
+        turn N
+    }
+    if pulse is blue {
+        turn S
+    }
+}
+
+**level 4**
