@@ -1,25 +1,27 @@
-//rules for changing dx/y as well as setting (+1, -1 etc)
-//define level loading: nodes, pulses, goals, color and shapes lists for level
-//new rule click
-//rules need to visually show their criteria
-//add blocker list and collision tests
-//click to edit goals logic
-//split out edit panel logic into separate file
-//toggle for bounds collision
-//different sounds for: pulse created, hit gate, goal match state.
+# UI
+----
 
-**level 1**
+color drop instead of word
+shape tweening instead of word
+direction arrow for compass directions
+
+
+# Levels
+----
+These probably need lots of repetition of the concept, but levels of complexity could be:
+
+## level 1
 circle firing left to right through gate and off screen. Goal directly under gate.
 change gate to turn circles S (or 90°)
 when hit{
     turn pulse South
 }
 
-**level 2**
+## level 2
 Two gates. As above, but with barrier between gate and goal.
 Turn the circle towards the other gate, then into the goal.
 
-**level 3**
+## level 3
 As level 1, but with two goals. One red, beneath the gate, one blue above.
 when hit {
     if pulse is red {
@@ -30,4 +32,65 @@ when hit {
     }
 }
 
-**level 4**
+## level 4
+As level 3, but using shape instead of color.
+
+## level 5
+Color and shape
+
+## level 6
+Variables: boolean flag
+when hit {
+    if flag is true {
+        turn N
+    }
+    if flag is false {
+        turn S
+    }
+    toggle flag;
+}
+
+## level 7
+Variables: incrementing a value
+when hit {
+    if counter < 5 {
+        turn N
+    }
+    if counter >= 5 {
+        turn S
+    }
+    add 1 to counter
+}
+
+## level 8, combining ideas
+when hit {
+    if counter < 5 and blue and square {
+        turn N
+    }
+    if red and circle {
+        add 1 to counter
+    }
+}
+
+# Features to do: levels
+- rules need to visually show their criteria: color / color and shape
+– remove element from list when it's accepted into a goal
+- add blockers, blocker list and collision tests
+– create some levels
+- define level loading: nodes, pulses, goals, color and shapes lists for level
+– create level menu
+
+# Features: synth and free play
+- normalise sound speed: diagonal speed greater than straight.
+- new rule click
+- click to edit goals logic
+– click to edit emitters
+
+# General features
+- remove pulse from list when it leaves the screen
+- level editor
+– Visual styling and animation for emitters
+– new UI for changing color, shape and direction
+- split out edit panel logic into components
+- rules for changing dx/y as well as setting (+1, -1 etc)
+– UI alternatives to cycling though options (drop downs, task specific pickers, etc)

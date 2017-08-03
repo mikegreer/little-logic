@@ -5,6 +5,7 @@ var cTop = c.offsetTop;
 var pulseList = [];
 var running = true;
 var pulseId = 0;
+var newRules = false;
 
 //settings & style
 var backgroundColor = '#2c3e50';
@@ -17,6 +18,8 @@ var gridSize = 50;
 var canvasWidth = 500;
 var canvasHeight = 500;
 var boundsCollision = false;
+var speed = 2;
+//var diagonalSpeed;
 
 //audio
 var audioCtx = new AudioContext();
@@ -159,6 +162,7 @@ function drawGrid(){
     ctx.lineTo(canvasWidth, canvasHeight);
     ctx.stroke();
 }
+
 function applyRules(pulse, rules){
     for(var i = 0; i < rules.length; i++){
         rule = rules[i];
@@ -176,7 +180,6 @@ function applyRules(pulse, rules){
         }
         //if match, apply rules
         if(match){
-            var speed = 2;
             if(rule.hasOwnProperty("playSound")){
                 playSample(rule.playSound);
             }
@@ -185,26 +188,26 @@ function applyRules(pulse, rules){
                     pulse.dx = 0;
                     pulse.dy = -speed;
                 }else if(rule.setDirection === 'NE'){
-                    pulse.dx = speed;
-                    pulse.dy = -speed;
+                    pulse.dx = 2;
+                    pulse.dy = -2;
                 }else if(rule.setDirection === 'E'){
                     pulse.dx = speed;
                     pulse.dy = 0;
                 }else if(rule.setDirection === 'SE'){
-                    pulse.dx = speed;
-                    pulse.dy = speed;
+                    pulse.dx = 2;
+                    pulse.dy = 2;
                 }else if(rule.setDirection === 'S'){
                     pulse.dx = 0;
                     pulse.dy = speed;
                 }else if(rule.setDirection === 'SW'){
-                    pulse.dx = -speed;
-                    pulse.dy = speed;
+                    pulse.dx = -2;
+                    pulse.dy = 2;
                 }else if(rule.setDirection === 'W'){
                     pulse.dx = -speed;
                     pulse.dy = 0;
                 }else if(rule.setDirection === 'NW'){
-                    pulse.dx = -speed;
-                    pulse.dy = -speed;
+                    pulse.dx = -2;
+                    pulse.dy = -2;
                 }
             }
             if(rule.hasOwnProperty("turnBy")){
@@ -287,36 +290,42 @@ function updatePulse(pulse){
         }
     }
     //check for collision with gate
-    for(var i = 0; i < gateList.length; i++){
-        var gate = gateList[i];
-        if(checkCollision(gate, pulse)){
-            pulse.x = gate.x;
-            pulse.y = gate.y;
-            applyRules(pulse, gate.rules);
+
+    if(typeof gateList !== 'undefined'){
+        for(var i = 0; i < gateList.length; i++){
+            var gate = gateList[i];
+            if(checkCollision(gate, pulse)){
+                pulse.x = gate.x;
+                pulse.y = gate.y;
+                applyRules(pulse, gate.rules);
+            }
         }
     }
     //check for collision with goal
-    for(var j = 0; j < goalList.length; j++){
-        var goal = goalList[j];
-        if(checkCollision(goal, pulse)){
-            //check goal conditions met
-            for(var k = 0; k < goal.acceptanceCriteria.length; k++){
-                var acceptance = goal.acceptanceCriteria[k];
-                if(
-                    pulse.shape === acceptance.ifShape
-                    && pulse.color === acceptance.ifColor
-                ){
-                    //TODO: goal animation
-                    pulse.dx = 0;
-                    pulse.dy = 0;
-                    pulse.x = goal.x;
-                    pulse.y = goal.y;
-                    if(acceptance.hasOwnProperty('playSound')){
-                        console.log('play');
-                        playSample(acceptance.playSound);
+
+    if(typeof goalList !== 'undefined'){
+        for(var j = 0; j < goalList.length; j++){
+            var goal = goalList[j];
+            if(checkCollision(goal, pulse)){
+                //check goal conditions met
+                for(var k = 0; k < goal.acceptanceCriteria.length; k++){
+                    var acceptance = goal.acceptanceCriteria[k];
+                    if(
+                        pulse.shape === acceptance.ifShape
+                        && pulse.color === acceptance.ifColor
+                    ){
+                        //TODO: goal animation
+                        pulse.dx = 0;
+                        pulse.dy = 0;
+                        pulse.x = goal.x;
+                        pulse.y = goal.y;
+                        if(acceptance.hasOwnProperty('playSound')){
+                            console.log('play');
+                            playSample(acceptance.playSound);
+                        }
+                        //TODO: check to see if all pulses have been released from emitters, and are in goals:
+                        //checkLevelStatus();
                     }
-                    //TODO: check to see if all pulses have been released from emitters, and are in goals:
-                    //checkLevelStatus();
                 }
             }
         }
@@ -387,14 +396,18 @@ function tick(timeStamp){
         drawShape(pulse.shape, pulse.x, pulse.y, pulseSize, pulseSize, pulse.color);
     }
     //draw gates
-    for(var i = 0; i < gateList.length; i++){
-        var gate = gateList[i];
-        drawGate(gate);
+    if(typeof gateList !== 'undefined'){
+        for(var i = 0; i < gateList.length; i++){
+            var gate = gateList[i];
+            drawGate(gate);
+        }
     }
     //draw goals
-    for(var i = 0; i < goalList.length; i++){
-        var goal = goalList[i];
-        drawShape('circle', goal.x, goal.y, 20, 20, '#ecf0f1');
+    if(typeof goalList !== 'undefined'){
+        for(var i = 0; i < goalList.length; i++){
+            var goal = goalList[i];
+            drawShape('circle', goal.x, goal.y, 20, 20, '#ecf0f1');
+        }
     }
     //move pulses (after draw to allow collision debugging to show)
     for(var i = 0; i < pulseList.length; i++){
@@ -405,6 +418,7 @@ function tick(timeStamp){
         requestAnimationFrame(tick);
     }
 };
+
 (function setup(){
     c.width = canvasWidth;
     c.height = canvasHeight;
@@ -412,13 +426,24 @@ function tick(timeStamp){
     ctx.fillStyle = backgroundColor;
     ctx.rect(0, 0, 500, 500);
     ctx.fill();
+    //calculate speed for 45 degree angle to arrive at same time.
+    //goes round in a big circle. idiotic.
+    // var diagonalDistance = Math.sqrt(Math.pow(gridSize, 2) + Math.pow(gridSize, 2));
+    // var timePerSquare = gridSize / speed;
+    // angleSpeed = diagonalDistance / timePerSquare;
+    // var angleRad = 45 * (Math.PI/180); //angle in radians
+    // diagonalSpeed = angleSpeed * Math.cos(angleRad);
+
     //set goal defaults
-    for(var i = 0; i < goalList.length; i++){
-        var goal = goalList[i];
-        goal.currentCollisions = [];
-        goal.width = 20;
-        goal.height = 20;
+    if(typeof goalList !== 'undefined'){
+        for(var i = 0; i < goalList.length; i++){
+            var goal = goalList[i];
+            goal.currentCollisions = [];
+            goal.width = 20;
+            goal.height = 20;
+        }
     }
+
     for(var i = 0; i < emitterList.length; i++){
         var emitter = emitterList[i];
         emitter.play = true;
