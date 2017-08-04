@@ -22,9 +22,69 @@ arrow.addEventListener('click', function(e){
     var currentDirection = parseInt(arrow.getAttribute('direction'));
     var nextDirection = currentDirection + directionIncrements;
     arrow.setAttribute('direction', nextDirection);
-//    console.log(nextDirection%360);
     arrow.style.transform = "rotate("+nextDirection+"deg)";
 })
 
 //shape selector
-//add tweening svg shape for square / circle / triangle / pentagon / start
+Math.radians = function(degrees) {
+  return degrees * Math.PI / 180;
+};
+var pointLimit = 6;
+function generatePath(pointsCount) {
+    var path = "";
+    var rotationOffset = 45;
+    var angleUnit = Math.radians(360/pointsCount);
+    for(var i = 1; i <= pointLimit; i++){
+        if(i < pointsCount){
+            var pointAngle = angleUnit * i + rotationOffset;
+        }else{
+            var pointAngle = angleUnit * pointsCount + rotationOffset;
+        }
+        var px = Math.cos(pointAngle) * 50 + 50;
+        var py = Math.sin(pointAngle) * 50 + 50;
+        if(path === ""){
+            path = "M" + px + " " + py + " ";
+        }
+        path += "L " + px + " " + py + " ";
+    }
+    path += "Z";
+    return path;
+}
+
+var shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
+var interval;
+var container = document.querySelector('.shape-select');
+
+shape.setAttribute('points', 3);
+shape.setAttribute('d', generatePath(3));
+container.appendChild(shape);
+shape.className = "shape";
+
+shape.addEventListener('click', function(e){
+    var currentPoints = parseInt(shape.getAttribute('points'));
+    var nextPoints = currentPoints + 1;
+    if(nextPoints > pointLimit){
+        nextPoints = 3;
+    }
+    shape.setAttribute('points', nextPoints);
+    tweenPoints(shape, currentPoints, nextPoints);
+});
+
+function tweenPoints(shape, from, to){
+    shape.style.transition = "all 300ms ease-in"
+    if(from === to - 1 || from === to + 1){
+        shape.setAttribute('d', generatePath(to));
+    }
+    else{
+        shape.style.transition = "all 150ms ease-in"
+        interval = setInterval(function () {
+            from -= 1;
+            if(from >= 3){
+                shape.setAttribute('d', generatePath(from));
+            }else{
+                interval = null;
+                console.log(interval);
+            }
+        }, 150);
+    }
+}
