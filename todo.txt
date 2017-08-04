@@ -94,3 +94,13 @@ when hit {
 - split out edit panel logic into components
 - rules for changing dx/y as well as setting (+1, -1 etc)
 – UI alternatives to cycling though options (drop downs, task specific pickers, etc)
+
+# Rule components
+– drum pad events animation
+– tooltip on hover / click of element to expand to text
+    – hover over color drop: "color is red"
+    – hover over shape: "shape is triangle"
+    – 'set direction to North'
+    – 'play sound snare'
+– UI to change sample packs in one click (sample packs of 9 sounds)
+– try color drop animations: mask complex svg pattern with drop shape, and animate it up on click (build transition into svg behind)

@@ -16,7 +16,6 @@ drop.addEventListener('click', function(e){
 });
 
 //direction picker
-//add arrow that turns to point in compass direction
 arrow.setAttribute('direction', 0);
 arrow.addEventListener('click', function(e){
     var currentDirection = parseInt(arrow.getAttribute('direction'));
