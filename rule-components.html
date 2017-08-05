@@ -17,6 +17,13 @@
                 height: 100%;
                 margin-top: -4vh;
             }
+            .rule-wrapper{
+                padding: 30px 60px 30px 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #ddd;
+            }
             .noselect {
               -webkit-touch-callout: none; /* iOS Safari */
                 -webkit-user-select: none; /* Safari */
@@ -76,15 +83,56 @@
             .drum{
                 width: 33px;
             }
+            .drum .drum-marker{
+                transition: all 100ms ease-in;
+            }
             .rule-word{
                 padding: 20px;
+            }
+            .tooltip{
+                position: absolute;
+                top: 100px;
+                left: 200px;
+                display: inline-block;
+            }
+            .tooltip-body{
+                padding: 16px 30px;
+                /*border: 1px solid #ccc;*/
+                background-color: #fff;
+                border-radius: 4px;
+                height: 0;
+                padding: 0 30px;
+                overflow: hidden;
+                position: relative;
+                transition: all 150ms ease-out;
+            }
+            .tail{
+                border-radius: 0 0 5px 0;
+                background-color: #fff;
+                width: 16px;
+                height: 16px;
+                transform: rotate(45deg);
+                position: relative;
+                bottom: 19px;
+                margin: 0 auto;
+                transition: all 200ms ease-out;
+                display: none;
             }
 
         </style>
     </head>
     <body>
-        <div class="container noselect">
 
+    <div class="tooltip">
+        <div class=tooltip-body>
+            pulse is red
+        </div>
+        <div class="tail"></div>
+    </div>
+
+    <div class="container noselect">
+
+    <div class="rule-wrapper">
             <span class="rule-word">if</span>
             <!-- <span class="rule-word">(</span> -->
 
@@ -117,6 +165,7 @@
             <style type="text/css">
             	.st0{fill:none;stroke:#4E77AA;stroke-width:2;stroke-miterlimit:10;}
             	.st1{fill:none;stroke:#4E77AA;stroke-miterlimit:10;}
+                .drum-marker{fill: #4E77AA;}
             </style>
             <g>
             	<path class="st0" d="M45.2,39.6c0,3.1-2.6,5.7-5.7,5.7H7.1c-3.1,0-5.7-2.6-5.7-5.7V7.1c0-3.1,2.6-5.7,5.7-5.7h32.4
@@ -126,10 +175,11 @@
             <line class="st1" x1="1.4" y1="30.7" x2="45.2" y2="30.7"/>
             <line class="st1" x1="30.6" y1="1.4" x2="30.6" y2="45.3"/>
             <line class="st1" x1="16" y1="1.4" x2="16" y2="45.3"/>
+            <rect class="drum-marker" x="4" y="3.5" rx="4" ry="4" width="10" height="10"/>
             </svg>
             <!-- <span class="rule-word">}</span> -->
-
         </div>
+    </div>
 
 
         <script src="https://use.typekit.net/avs8fci.js"></script>

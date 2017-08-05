@@ -98,6 +98,7 @@ when hit {
 # Rule components
 – drum pad events animation
 – tooltip on hover / click of element to expand to text
+    – set open state with delay setting false to prevent repeated animations when changing elements 
     – hover over color drop: "color is red"
     – hover over shape: "shape is triangle"
     – 'set direction to North'
