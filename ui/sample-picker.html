@@ -48,29 +48,34 @@ customElements.define('sample-picker', class extends HTMLElement {
       }
     }
 
+    static get observedAttributes() {return ['sample']; }
+
+    // Respond to attribute changes.
+    attributeChangedCallback(attr, oldValue, newValue) {
+        if (attr == 'sample') {
+            var marker = document.querySelector('.drum-marker');
+            var currentX = newValue % 3;
+            var currentY = Math.floor(newValue/3) % 3;
+            marker.setAttribute('x', currentX * 14.5 + 4);
+            marker.setAttribute('y', currentY * 14.5 + 3.5);
+        }
+    }
+
     constructor() {
         super();
         this.appendChild(samplePickerTemplate.cloneNode(true));
 
         if(typeof(this.sample) != 'string'){
-            this.sample = 1;
+            this.sample = '0';
         }
-
-        var drum = document.querySelector('.drum');
-        var marker = document.querySelector('.drum-marker');
 
         this.addEventListener('click', function(e){
             var sampleid = parseInt(this.sample);
-            if(sampleid + 1 < 10){
+            if(sampleid < 8){
                 this.sample = sampleid + 1;
             }else{
-                this.sample = 1;
+                this.sample = '0';
             }
-
-            var currentX = sampleid % 3;
-            var currentY = Math.floor(sampleid/3) % 3;
-            marker.setAttribute('x', currentX * 14.5 + 4);
-            marker.setAttribute('y', currentY * 14.5 + 3.5);
         });
     }
 });

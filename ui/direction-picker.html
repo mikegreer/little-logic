@@ -42,6 +42,16 @@ customElements.define('direction-picker', class extends HTMLElement {
             this.removeAttribute('direction');
         }
     }
+    static get observedAttributes() {return ['direction']; }
+
+    // Respond to attribute changes.
+    attributeChangedCallback(attr, oldValue, newValue) {
+        if (attr == 'direction') {
+            var arrow = this.querySelector('.direction-arrow');
+            arrow.style.transform = "rotate("+newValue+"deg)";
+        }
+    }
+
     get increments() {
         return this.getAttribute('increments');
     }
@@ -59,21 +69,14 @@ customElements.define('direction-picker', class extends HTMLElement {
 
         if(typeof(this.increments) != 'string'){
             this.increments = 90;
-            console.log(this.increments);
         }
         if(typeof(this.direction) === undefined){
             this.direction = 0;
         }
 
-        function setArrow(direction){
-            var arrow = document.querySelector('.direction-arrow');
-            arrow.style.transform = "rotate("+direction+"deg)";
-        }
-        setArrow(this.direction);
         this.addEventListener('click', function(e){
             var nextDirection = parseInt(this.direction) + parseInt(this.increments);
             this.setAttribute('direction', nextDirection);
-            setArrow(nextDirection);
         });
     }
 });

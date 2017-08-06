@@ -57,7 +57,7 @@
             <span class="rule-title">if</span>
             <drop-picker dropcolor="3"></drop-picker>
             <span class="rule-word">and</span>
-            <shape-picker points="5"></shape-picker>
+            <shape-picker></shape-picker>
         </div>
         <div class="rule rule-do">
             <span class="rule-title">do</span>
@@ -82,12 +82,15 @@ window.addEventListener('WebComponentsReady', function() {
     });
     var exampleRule = {
         'ruleId': 1,
-        'ifColorIndex': 4,
-        'ifShapePoints': 3,
-        'setDirection': 90,
-        'sampleIndex': 4
+        'ifColorIndex': 3,
+        'ifShapePoints': 5,
+        'setDirection': 180,
+        'sampleIndex': 3
     }
     document.querySelector('drop-picker').setAttribute('dropcolor', exampleRule.ifColorIndex);
+    document.querySelector('shape-picker').setAttribute('points', exampleRule.ifShapePoints);
+    document.querySelector('direction-picker').setAttribute('direction', exampleRule.setDirection);
+    document.querySelector('sample-picker').setAttribute('sample', exampleRule.sampleIndex);
     //load in rule passing params to ui elements
     //add listeners for tooltip, binding text to output.
     //pass in available color list / shape list somehow (colorlength param?).

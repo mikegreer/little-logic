@@ -42,12 +42,55 @@ customElements.define('shape-picker', class extends HTMLElement {
       }
     }
 
-    static get observedAttributes() {return ['name']; }
+    static get observedAttributes() {return ['points']; }
 
     // Respond to attribute changes.
     attributeChangedCallback(attr, oldValue, newValue) {
         if (attr == 'points') {
-            shape.setAttribute('d', generatePath(this.points));
+            //make this the single place to redraw shape
+            var pointLimit = 6;
+            var interval;
+            var shape = this.querySelector('.shape');
+
+            function generatePath(pointsCount) {
+                var path = "";
+                var rotationOffset = 45;
+                var angleUnit = (360/pointsCount) * Math.PI / 180;
+                for(var i = 1; i <= pointLimit; i++){
+                    if(i < pointsCount){
+                        var pointAngle = angleUnit * i + rotationOffset;
+                    }else{
+                        var pointAngle = angleUnit * pointsCount + rotationOffset;
+                    }
+                    var px = Math.cos(pointAngle) * 50 + 50;
+                    var py = Math.sin(pointAngle) * 50 + 50;
+                    if(path === ""){
+                        path = "M" + px + " " + py + " ";
+                    }
+                    path += "L " + px + " " + py + " ";
+                }
+                path += "Z";
+                return path;
+            }
+            //shape.setAttribute('d', generatePath(newValue));
+            function tweenPoints(shape, from, to){
+                shape.style.transition = "all 300ms ease-in";
+                if(from != pointLimit){
+                    shape.setAttribute('d', generatePath(to));
+                }
+                else{
+                    shape.style.transition = "all 150ms ease-in"
+                    interval = setInterval(function () {
+                        from -= 1;
+                        if(from >= 3){
+                            shape.setAttribute('d', generatePath(from));
+                        }else{
+                            clearTimeout(interval);
+                        }
+                    }, 150);
+                }
+            }
+            tweenPoints(shape, parseInt(oldValue), parseInt(newValue));
         }
     }
 
@@ -56,59 +99,16 @@ customElements.define('shape-picker', class extends HTMLElement {
         this.appendChild(shapePickerTemplate.cloneNode(true));
 
         var pointLimit = 6;
-        var shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
         var interval;
         var container = document.querySelector('.shape-select');
-
-        Math.radians = function(degrees) {
-          return degrees * Math.PI / 180;
-        };
+        var shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        shape.setAttribute('class', 'shape');
+        container.appendChild(shape);
 
         if(typeof(this.points) != 'string'){
             this.points = 3;
         }
-        shape.setAttribute('d', generatePath(this.points));
-        container.appendChild(shape);
-        shape.class = "shape";
 
-        function generatePath(pointsCount) {
-            var path = "";
-            var rotationOffset = 45;
-            var angleUnit = Math.radians(360/pointsCount);
-            for(var i = 1; i <= pointLimit; i++){
-                if(i < pointsCount){
-                    var pointAngle = angleUnit * i + rotationOffset;
-                }else{
-                    var pointAngle = angleUnit * pointsCount + rotationOffset;
-                }
-                var px = Math.cos(pointAngle) * 50 + 50;
-                var py = Math.sin(pointAngle) * 50 + 50;
-                if(path === ""){
-                    path = "M" + px + " " + py + " ";
-                }
-                path += "L " + px + " " + py + " ";
-            }
-            path += "Z";
-            return path;
-        }
-
-        function tweenPoints(shape, from, to){
-            shape.style.transition = "all 300ms ease-in"
-            if(from === to - 1 || from === to + 1){
-                shape.setAttribute('d', generatePath(to));
-            }
-            else{
-                shape.style.transition = "all 150ms ease-in"
-                interval = setInterval(function () {
-                    from -= 1;
-                    if(from >= 3){
-                        shape.setAttribute('d', generatePath(from));
-                    }else{
-                        clearTimeout(interval);
-                    }
-                }, 150);
-            }
-        }
         this.addEventListener('click', function(e){
             var currentPoints = parseInt(this.getAttribute('points'));
             var nextPoints = currentPoints + 1;
@@ -116,7 +116,6 @@ customElements.define('shape-picker', class extends HTMLElement {
                 nextPoints = 3;
             }
             this.setAttribute('points', nextPoints);
-            tweenPoints(shape, currentPoints, nextPoints);
         });
     }
 });
