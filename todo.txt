@@ -1,11 +1,3 @@
-# UI
-----
-
-color drop instead of word
-shape tweening instead of word
-direction arrow for compass directions
-
-
 # Levels
 ----
 These probably need lots of repetition of the concept, but levels of complexity could be:
@@ -81,12 +73,11 @@ when hit {
 – create level menu
 
 # Features: synth and free play
-- normalise sound speed: diagonal speed greater than straight.
 - new rule click
 - click to edit goals logic
 – click to edit emitters
 
-# General features
+# General features / UI
 - remove pulse from list when it leaves the screen
 - level editor
 – Visual styling and animation for emitters
@@ -97,8 +88,10 @@ when hit {
 
 # Rule components
 – drum pad events animation
+    – drum pad UI refactor: expand on click, the click on one of 9 pads to immediately select
 – tooltip on hover / click of element to expand to text
-    – set open state with delay setting false to prevent repeated animations when changing elements 
+    – move animations into simpler css class?
+    – set open state with delay setting false to prevent repeated animations when changing elements
     – hover over color drop: "color is red"
     – hover over shape: "shape is triangle"
     – 'set direction to North'

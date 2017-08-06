@@ -1,0 +1,77 @@
+<template id="sample-picker">
+    <style>
+        .drum{
+            width: 33px;
+            cursor: pointer;
+        }
+        .drum .drum-marker{
+            transition: all 100ms ease-in;
+        }
+        .st0{
+            fill:none;
+            stroke:#4E77AA;
+            stroke-width:2;
+            stroke-miterlimit:10;
+        }
+        .st1{
+            fill:none;
+            stroke:#4E77AA;
+            stroke-miterlimit:10;
+        }
+        .drum-marker{fill: #4E77AA;}
+    </style>
+    <svg class="drum" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46.9 46.9" style="enable-background:new 0 0 46.9 46.9;" xml:space="preserve">
+    <g>
+        <path class="st0" d="M45.2,39.6c0,3.1-2.6,5.7-5.7,5.7H7.1c-3.1,0-5.7-2.6-5.7-5.7V7.1c0-3.1,2.6-5.7,5.7-5.7h32.4
+            c3.1,0,5.7,2.6,5.7,5.7V39.6z"/>
+    </g>
+    <line class="st1" x1="1.4" y1="16" x2="45.2" y2="16"/>
+    <line class="st1" x1="1.4" y1="30.7" x2="45.2" y2="30.7"/>
+    <line class="st1" x1="30.6" y1="1.4" x2="30.6" y2="45.3"/>
+    <line class="st1" x1="16" y1="1.4" x2="16" y2="45.3"/>
+    <rect class="drum-marker" x="4" y="3.5" rx="4" ry="4" width="10" height="10"/>
+    </svg>
+</template>
+
+<script>
+var samplePickerTemplate = document.currentScript.ownerDocument.querySelector('#sample-picker').content;
+
+customElements.define('sample-picker', class extends HTMLElement {
+    get sample() {
+      return this.getAttribute('sample');
+    }
+    set sample(val) {
+      if (val) {
+        this.setAttribute('sample', val);
+      } else {
+        this.removeAttribute('sample');
+      }
+    }
+
+    constructor() {
+        super();
+        this.appendChild(samplePickerTemplate.cloneNode(true));
+
+        if(typeof(this.sample) != 'string'){
+            this.sample = 1;
+        }
+
+        var drum = document.querySelector('.drum');
+        var marker = document.querySelector('.drum-marker');
+
+        this.addEventListener('click', function(e){
+            var sampleid = parseInt(this.sample);
+            if(sampleid + 1 < 10){
+                this.sample = sampleid + 1;
+            }else{
+                this.sample = 1;
+            }
+
+            var currentX = sampleid % 3;
+            var currentY = Math.floor(sampleid/3) % 3;
+            marker.setAttribute('x', currentX * 14.5 + 4);
+            marker.setAttribute('y', currentY * 14.5 + 3.5);
+        });
+    }
+});
+</script>

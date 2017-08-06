@@ -20,6 +20,56 @@
                 box-sizing: border-box;
                 padding: 100px;
             }
+            .rule-output{
+                width: 400px;
+                margin: 0 20px;
+            }
+            .rule-wrapper{
+                flex-direction: column;
+            }
+            .rule{
+                padding: 0 40px 0 90px;
+                height: 90px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                position: relative;
+                box-sizing: border-box;
+            }
+            .rule-if{
+                border-color: #95a5a6;
+                border-radius: 7px 7px 0 0;
+            }
+            .rule-do{
+                border-color: #7f8c8d;
+                border-radius: 0 0 7px 7px;
+                margin-top: -1px;
+            }
+            .rule-word{
+                padding: 0 25px 0 20px;
+            }
+            .rule-title{
+                position: absolute;
+                left: 0;
+                height: 90px;
+                box-sizing: border-box;
+                padding: 35px 0;
+                vertical-align: middle;
+                color: #fff;
+                border-radius: 6px 0 0 6px;
+                width: 56px;
+                text-align: center;
+            }
+            .rule-if .rule-title{
+                background-color: #95a5a6;
+                border-radius: 6px 0 0 0;
+            }
+            .rule-do .rule-title{
+                background-color: #7f8c8d;
+                border-radius: 0 0 0 6px;
+            }
             .noselect {
               -webkit-touch-callout: none; /* iOS Safari */
                 -webkit-user-select: none; /* Safari */
@@ -61,7 +111,10 @@
             }
         </style>
         <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-        <link rel="import" href="ui/rule-editor.html">
+        <link rel="import" href="ui/drop-picker.html">
+        <link rel="import" href="ui/shape-picker.html">
+        <link rel="import" href="ui/direction-picker.html">
+        <link rel="import" href="ui/sample-picker.html">
     </head>
     <body>
 
@@ -77,7 +130,20 @@
             hello.
         </div>
 
-        <rule-editor></rule-editor>
+        <div class="rule-wrapper">
+            <div class="rule rule-if">
+                <span class="rule-title">if</span>
+                <drop-picker></drop-picker>
+                <span class="rule-word">and</span>
+                <shape-picker></shape-picker>
+            </div>
+            <div class="rule rule-do">
+                <span class="rule-title">do</span>
+                <direction-picker></direction-picker>
+                <span class="rule-word">and</span>
+                <sample-picker></sample-picker>
+            </div>
+        </div>
     </div>
 
     <script src="https://use.typekit.net/avs8fci.js"></script>

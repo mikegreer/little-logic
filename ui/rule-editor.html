@@ -1,0 +1,93 @@
+<link rel="import" href="drop-picker.html">
+<link rel="import" href="shape-picker.html">
+<link rel="import" href="direction-picker.html">
+<link rel="import" href="sample-picker.html">
+
+<template id="rule-editor">
+    <style>
+        .rule-wrapper{
+            flex-direction: column;
+        }
+        .rule{
+            padding: 0 40px 0 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .rule-if{
+            border-color: #95a5a6;
+            border-radius: 7px 7px 0 0;
+        }
+        .rule-do{
+            border-color: #7f8c8d;
+            border-radius: 0 0 7px 7px;
+            margin-top: -1px;
+        }
+        .rule-word{
+            padding: 0 25px 0 20px;
+        }
+        .rule-title{
+            position: absolute;
+            left: 0;
+            height: 90px;
+            box-sizing: border-box;
+            padding: 35px 0;
+            vertical-align: middle;
+            color: #fff;
+            border-radius: 6px 0 0 6px;
+            width: 56px;
+            text-align: center;
+        }
+        .rule-if .rule-title{
+            background-color: #95a5a6;
+            border-radius: 6px 0 0 0;
+        }
+        .rule-do .rule-title{
+            background-color: #7f8c8d;
+            border-radius: 0 0 0 6px;
+        }
+    </style>
+    <div class="rule-wrapper">
+        <div class="rule rule-if">
+            <span class="rule-title">if</span>
+            <drop-picker dropcolor="3"></drop-picker>
+            <span class="rule-word">and</span>
+            <shape-picker points="5"></shape-picker>
+        </div>
+        <div class="rule rule-do">
+            <span class="rule-title">do</span>
+            <direction-picker direction="90" increments="90"></direction-picker>
+            <span class="rule-word">and</span>
+            <sample-picker></sample-picker>
+        </div>
+    </div>
+</div>
+</template>
+
+<script>
+var currentDocument = document.currentScript.ownerDocument;
+window.addEventListener('WebComponentsReady', function() {
+    customElements.define('rule-editor', class extends HTMLElement {
+        constructor() {
+            super();
+            const t = currentDocument.querySelector('#rule-editor');
+            const instance = t.content.cloneNode(true);
+            this.appendChild(instance);
+        }
+    });
+
+    //load in rule passing params to ui elements
+    //add listeners for tooltip, binding text to output.
+    //pass in available color list / shape list somehow (colorlength param?).
+    //listen to changes on rule ui elements and reflect back to rule model.
+
+
+});
+
+
+</script>

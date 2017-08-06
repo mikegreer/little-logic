@@ -1,0 +1,80 @@
+<template id="direction-picker">
+    <style>
+        .direction-arrow{
+            height: 33px;
+            width: 33px;
+            fill: #03A678;
+            cursor: pointer;
+            margin-top: 4px;
+            -webkit-transition: .2s ease-in;
+            -moz-transition: .2s ease-in;
+            -o-transition: .2s ease-in;
+            transition: .2s ease-in;
+        }
+        .direction-arrow-wrapper{
+            animation: wiggle 4s ease-in-out infinite;
+            animation-direction: alternate;
+        }
+        @keyframes wiggle { 50% { transform: rotate(3deg); } 100% { transform: rotate(-3deg); } }
+    </style>
+    <span class="direction-arrow-wrapper">
+        <svg class="direction-arrow noselect" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        viewBox="0 0 46.9 46.9" style="enable-background:new 0 0 46.9 46.9;" xml:space="preserve">
+            <g>
+                <path d="M16.4,45.8c-0.7,0.6-1.3,0.3-1.3-0.6v-8.5c0-0.9-0.8-1.7-1.7-1.7H6.1c-0.9,0-1.7-0.8-1.7-1.7V13.5c0-0.9,0.8-1.7,1.7-1.7
+            h7.4c0.9,0,1.7-0.8,1.7-1.7V1.7c0-0.9,0.6-1.2,1.3-0.6l24.8,21.2c0.7,0.6,0.7,1.6,0,2.2L16.4,45.8z"></path>
+            </g>
+        </svg>
+    </span>
+</template>
+
+<script>
+
+var directionPickerTemplate = document.currentScript.ownerDocument.querySelector('#direction-picker').content;
+customElements.define('direction-picker', class extends HTMLElement {
+    get direction() {
+        return this.getAttribute('direction');
+    }
+    set direction(val) {
+        if (val) {
+            this.setAttribute('direction', val);
+        } else {
+            this.removeAttribute('direction');
+        }
+    }
+    get increments() {
+        return this.getAttribute('increments');
+    }
+    set increments(val) {
+        if (val) {
+            this.setAttribute('increments', val);
+        } else {
+            this.removeAttribute('increments');
+        }
+    }
+
+    constructor() {
+        super();
+        this.appendChild(directionPickerTemplate.cloneNode(true));
+
+        if(typeof(this.increments) != 'string'){
+            this.increments = 90;
+            console.log(this.increments);
+        }
+        if(typeof(this.direction) === undefined){
+            this.direction = 0;
+        }
+
+        function setArrow(direction){
+            var arrow = document.querySelector('.direction-arrow');
+            arrow.style.transform = "rotate("+direction+"deg)";
+        }
+        setArrow(this.direction);
+        this.addEventListener('click', function(e){
+            var nextDirection = parseInt(this.direction) + parseInt(this.increments);
+            this.setAttribute('direction', nextDirection);
+            setArrow(nextDirection);
+        });
+    }
+});
+</script>
