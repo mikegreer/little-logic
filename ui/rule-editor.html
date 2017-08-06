@@ -80,7 +80,14 @@ window.addEventListener('WebComponentsReady', function() {
             this.appendChild(instance);
         }
     });
-
+    var exampleRule = {
+        'ruleId': 1,
+        'ifColorIndex': 4,
+        'ifShapePoints': 3,
+        'setDirection': 90,
+        'sampleIndex': 4
+    }
+    document.querySelector('drop-picker').setAttribute('dropcolor', exampleRule.ifColorIndex);
     //load in rule passing params to ui elements
     //add listeners for tooltip, binding text to output.
     //pass in available color list / shape list somehow (colorlength param?).

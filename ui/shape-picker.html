@@ -42,6 +42,15 @@ customElements.define('shape-picker', class extends HTMLElement {
       }
     }
 
+    static get observedAttributes() {return ['name']; }
+
+    // Respond to attribute changes.
+    attributeChangedCallback(attr, oldValue, newValue) {
+        if (attr == 'points') {
+            shape.setAttribute('d', generatePath(this.points));
+        }
+    }
+
     constructor() {
         super();
         this.appendChild(shapePickerTemplate.cloneNode(true));

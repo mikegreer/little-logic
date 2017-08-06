@@ -9,7 +9,13 @@ window.addEventListener('WebComponentsReady', function() {
     // drop.addEventListener('mouseleave', function(e){
     //     hideTooltip();
     // });
-
+    var rule = {
+        'ruleId': 1,
+        'ifColor': 'blue',
+        'ifShape': 'square',
+        'setDirection': 'SW',
+        'playSound': 'pulse-2'
+    }
 });
 
 //tooltip
