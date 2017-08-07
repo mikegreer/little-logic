@@ -25,6 +25,7 @@
 var dropPickerTemplate = document.currentScript.ownerDocument.querySelector('#drop-picker').content;
 
 customElements.define('drop-picker', class extends HTMLElement {
+
     get dropcolor() {
       return this.getAttribute('dropColor');
     }
@@ -44,6 +45,11 @@ customElements.define('drop-picker', class extends HTMLElement {
         if (attr == 'dropcolor') {
             this.colorList = ['#e74c3c','#3498db', '#2ecc71', '#e67e22', '#f1c40f', '#8e44ad', '#2c3e50'];
             this.querySelector('svg').style.fill = this.colorList[this.dropcolor];
+            var event = new CustomEvent('colorChange', {
+                cancelable: true,
+                detail: {value: newValue}
+            });
+            this.dispatchEvent(event);
         }
     }
 

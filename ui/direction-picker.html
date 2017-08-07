@@ -49,6 +49,11 @@ customElements.define('direction-picker', class extends HTMLElement {
         if (attr == 'direction') {
             var arrow = this.querySelector('.direction-arrow');
             arrow.style.transform = "rotate("+newValue+"deg)";
+            var event = new CustomEvent('directionChange', {
+                cancelable: true,
+                detail: {value: newValue}
+            });
+            this.dispatchEvent(event);
         }
     }
 

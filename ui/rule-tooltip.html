@@ -1,0 +1,87 @@
+<template id="rule-tooltip">
+    <style>
+        .tooltip{
+            position: absolute;
+            z-index: 1;
+            top: 100px;
+            left: 200px;
+            display: inline-block;
+        }
+        .body-hide{
+            height: 0;
+            padding: 0 30px;
+        }
+        .tooltip-body{
+            padding: 16px 30px;
+            /*border: 1px solid #ccc;*/
+            background-color: #fff;
+            border-radius: 4px;
+            height: 20px;
+            padding: 16px 30px;
+            overflow: hidden;
+            position: relative;
+            transition: all 150ms ease-out;
+        }
+        .tail{
+            border-radius: 0 0 5px 0;
+            background-color: #fff;
+            width: 16px;
+            height: 16px;
+            transform: rotate(45deg);
+            position: relative;
+            bottom: 19px;
+            margin: 0 auto;
+            transition: all 200ms ease-out;
+            display: none;
+        }
+    </style>
+    <div class="tooltip">
+        <div class=tooltip-body>
+            pulse is red
+        </div>
+        <div class="tail"></div>
+    </div>
+</template>
+
+<script>
+var tooltipTemplate = document.currentScript.ownerDocument.querySelector('#rule-tooltip').content;
+
+customElements.define('rule-tooltip', class extends HTMLElement {
+    constructor() {
+        super();
+        this.appendChild(tooltipTemplate.cloneNode(true));
+
+        var tooltip = document.querySelector('.tooltip');
+        var tooltipBody = document.querySelector('.tooltip-body');
+        var tooltipTail = document.querySelector('.tail');
+        function showTooltip(target){
+            //xpos = middle of target - half width of tooltip
+            //      = bounds.left + ((bounds.right - bounds.left) / 2) - half width of tooltip
+            var tipBounds = tooltip.getBoundingClientRect();
+            var bounds = target.getBoundingClientRect();
+            xpos = bounds.left + (bounds.width / 2) - (tipBounds.width / 2);
+            ypos = bounds.top - 80;
+            tooltip.style.left = xpos+"px";
+            tooltip.style.top = ypos+"px";
+            tooltipBody.style.height = "20px";
+            tooltipBody.style.padding = "16px 30px";
+            window.setTimeout(function(){
+                tooltipTail.style.display = "block";
+                window.setTimeout(function(){
+                    tooltipTail.style.bottom = "9px";
+                }, 100);
+            }, 200);
+        }
+        function hideTooltip(){
+            tooltipTail.style.bottom = "19px";
+            window.setTimeout(function(){
+                tooltipTail.style.display = "none";
+                window.setTimeout(function(){
+                    tooltipBody.style.height = "0";
+                    tooltipBody.style.padding = "0 30px";
+                }, 50);
+            }, 100);
+        }
+    }
+});
+</script>

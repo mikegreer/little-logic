@@ -58,6 +58,11 @@ customElements.define('sample-picker', class extends HTMLElement {
             var currentY = Math.floor(newValue/3) % 3;
             marker.setAttribute('x', currentX * 14.5 + 4);
             marker.setAttribute('y', currentY * 14.5 + 3.5);
+            var event = new CustomEvent('sampleChange', {
+                cancelable: true,
+                detail: {value: newValue}
+            });
+            this.dispatchEvent(event);
         }
     }
 

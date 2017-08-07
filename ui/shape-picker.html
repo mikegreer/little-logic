@@ -91,6 +91,11 @@ customElements.define('shape-picker', class extends HTMLElement {
                 }
             }
             tweenPoints(shape, parseInt(oldValue), parseInt(newValue));
+            var event = new CustomEvent('shapeChange', {
+                cancelable: true,
+                detail: {value: newValue}
+            });
+            this.dispatchEvent(event);
         }
     }
 

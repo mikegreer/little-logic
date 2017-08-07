@@ -2,6 +2,7 @@
 <link rel="import" href="shape-picker.html">
 <link rel="import" href="direction-picker.html">
 <link rel="import" href="sample-picker.html">
+<link rel="import" href="rule-tooltip.html">
 
 <template id="rule-editor">
     <style>
@@ -53,6 +54,7 @@
         }
     </style>
     <div class="rule-wrapper">
+        <rule-tooltip></rule-tooltip>
         <div class="rule rule-if">
             <span class="rule-title">if</span>
             <drop-picker dropcolor="3"></drop-picker>
@@ -78,19 +80,42 @@ window.addEventListener('WebComponentsReady', function() {
             const t = currentDocument.querySelector('#rule-editor');
             const instance = t.content.cloneNode(true);
             this.appendChild(instance);
+
+            var exampleRule = {
+                'ruleId': 1,
+                'ifColorIndex': 3,
+                'ifShapePoints': 5,
+                'setDirection': 180,
+                'sampleIndex': 3
+            }
+            var dropPicker = document.querySelector('drop-picker');
+            dropPicker.setAttribute('dropcolor', exampleRule.ifColorIndex);
+            dropPicker.addEventListener('colorChange', function(e) {
+                exampleRule.ifColorIndex = parseInt(e.detail.value);
+            });
+
+            var shapePicker = document.querySelector('shape-picker');
+            shapePicker.setAttribute('points', exampleRule.ifShapePoints);
+            shapePicker.addEventListener('shapeChange', function(e) {
+                exampleRule.ifShapePoints = parseInt(e.detail.value);
+            });
+
+            var directionPicker = document.querySelector('direction-picker');
+            directionPicker.setAttribute('direction', exampleRule.setDirection);
+            directionPicker.addEventListener('directionChange', function(e) {
+                exampleRule.setDirection = parseInt(e.detail.value);
+            });
+
+            var samplePicker = document.querySelector('sample-picker');
+            samplePicker.setAttribute('sample', exampleRule.sampleIndex);
+            samplePicker.addEventListener('sampleChange', function(e){
+                exampleRule.sampleIndex = parseInt(e.detail.value);
+            });
         }
     });
-    var exampleRule = {
-        'ruleId': 1,
-        'ifColorIndex': 3,
-        'ifShapePoints': 5,
-        'setDirection': 180,
-        'sampleIndex': 3
-    }
-    document.querySelector('drop-picker').setAttribute('dropcolor', exampleRule.ifColorIndex);
-    document.querySelector('shape-picker').setAttribute('points', exampleRule.ifShapePoints);
-    document.querySelector('direction-picker').setAttribute('direction', exampleRule.setDirection);
-    document.querySelector('sample-picker').setAttribute('sample', exampleRule.sampleIndex);
+
+
+
     //load in rule passing params to ui elements
     //add listeners for tooltip, binding text to output.
     //pass in available color list / shape list somehow (colorlength param?).
