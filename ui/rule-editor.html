@@ -78,8 +78,8 @@ window.addEventListener('WebComponentsReady', function() {
         'ruleId': 1,
         'ifColorIndex': 3,
         'ifShapePoints': 5,
-        'setDirection': 180,
-        'sampleIndex': 3
+        'direction': 270,
+        'sample': 3
     }
     var exampleLevelOptions = {
         'colors': [
@@ -130,11 +130,11 @@ window.addEventListener('WebComponentsReady', function() {
             })[0];
             return "if pulse shape is " + shapeMatch.label;
         }
-        if(rulePart === 'setDirection'){
-            return "do set pulse direction to " + newValue;
+        if(rulePart === 'direction'){
+            return "set pulse direction to " + newValue;
         }
-        if(rulePart === 'sampleIndex'){
-            return "do play sound " + exampleLevelOptions.sounds[newValue];
+        if(rulePart === 'sample'){
+            return "play sound " + exampleLevelOptions.sounds[newValue];
         }
     }
     customElements.define('rule-editor', class extends HTMLElement {
@@ -161,13 +161,13 @@ window.addEventListener('WebComponentsReady', function() {
                 },
                 {
                     'selector': 'direction-picker',
-                    'ruleAttribute': 'setDirection',
+                    'ruleAttribute': 'direction',
                     'changeEvent': 'directionChange'
 //                    'ruleAttribute': 'pulsedirection'
                 },
                 {
                     'selector': 'sample-picker',
-                    'ruleAttribute': 'sampleIndex',
+                    'ruleAttribute': 'sample',
                     'changeEvent': 'sampleChange'
 //                    'ruleAttribute': 'pulsesound'
                 },
