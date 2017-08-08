@@ -1,28 +1,41 @@
 <template id="rule-tooltip">
     <style>
-        .tooltip{
+        /*:host{
             position: absolute;
             z-index: 1;
             top: 100px;
             left: 200px;
             display: inline-block;
-        }
-        .body-hide{
+        }*/
+        /*.body-hide{
             height: 0;
             padding: 0 30px;
+        }*/
+        .visible{
+            transition: all 150ms ease-out;
+            width: 300px;
+            height: 100px;
+            opacity: 1;
+            position: relative;
+            top: 0;
+        }
+        .hidden{
+            transition: all 150ms ease-out;
+            opacity: 0;
+            top: 54px;
         }
         .tooltip-body{
-            padding: 16px 30px;
-            /*border: 1px solid #ccc;*/
+            padding: 12px 30px;
+            margin-bottom: 8px;
             background-color: #fff;
-            border-radius: 4px;
+            border-radius: 7px;
             height: 20px;
-            padding: 16px 30px;
+            text-align: center;
             overflow: hidden;
             position: relative;
             transition: all 150ms ease-out;
         }
-        .tail{
+        /*.tail{
             border-radius: 0 0 5px 0;
             background-color: #fff;
             width: 16px;
@@ -33,55 +46,80 @@
             margin: 0 auto;
             transition: all 200ms ease-out;
             display: none;
-        }
+        }*/
     </style>
-    <div class="tooltip">
-        <div class=tooltip-body>
-            pulse is red
-        </div>
-        <div class="tail"></div>
+    <div class="tooltip-body">
+        pulse is red
     </div>
+    <!-- <div class="tail"></div> -->
 </template>
 
 <script>
 var tooltipTemplate = document.currentScript.ownerDocument.querySelector('#rule-tooltip').content;
 
 customElements.define('rule-tooltip', class extends HTMLElement {
+    get label() {
+      return this.getAttribute('label');
+    }
+    set label(val) {
+      if (val) {
+        this.setAttribute('label', val);
+      } else {
+        this.removeAttribute('label');
+      }
+    }
+
+    static get observedAttributes() {return ['label']; }
+
+    // Respond to attribute changes.
+    attributeChangedCallback(attr, oldValue, newValue) {
+        if (attr == 'label') {
+            this.querySelector('.tooltip-body').innerHTML = newValue;
+            if(newValue === "" || newValue === null){
+                this.className = "hidden";
+            }else{
+                this.className = "visible";
+            }
+        }
+    }
+
     constructor() {
         super();
+        //this.createShadowRoot();
         this.appendChild(tooltipTemplate.cloneNode(true));
 
-        var tooltip = document.querySelector('.tooltip');
-        var tooltipBody = document.querySelector('.tooltip-body');
-        var tooltipTail = document.querySelector('.tail');
-        function showTooltip(target){
-            //xpos = middle of target - half width of tooltip
-            //      = bounds.left + ((bounds.right - bounds.left) / 2) - half width of tooltip
-            var tipBounds = tooltip.getBoundingClientRect();
-            var bounds = target.getBoundingClientRect();
-            xpos = bounds.left + (bounds.width / 2) - (tipBounds.width / 2);
-            ypos = bounds.top - 80;
-            tooltip.style.left = xpos+"px";
-            tooltip.style.top = ypos+"px";
-            tooltipBody.style.height = "20px";
-            tooltipBody.style.padding = "16px 30px";
-            window.setTimeout(function(){
-                tooltipTail.style.display = "block";
-                window.setTimeout(function(){
-                    tooltipTail.style.bottom = "9px";
-                }, 100);
-            }, 200);
-        }
-        function hideTooltip(){
-            tooltipTail.style.bottom = "19px";
-            window.setTimeout(function(){
-                tooltipTail.style.display = "none";
-                window.setTimeout(function(){
-                    tooltipBody.style.height = "0";
-                    tooltipBody.style.padding = "0 30px";
-                }, 50);
-            }, 100);
-        }
+
+        //var tooltip = document.querySelector('.tooltip');
+        // var tooltipBody = document.querySelector('.tooltip-body');
+        // var tooltipTail = document.querySelector('.tail');
+        // function showTooltip(target){
+        //     //xpos = middle of target - half width of tooltip
+        //     //      = bounds.left + ((bounds.right - bounds.left) / 2) - half width of tooltip
+        //     var tipBounds = tooltip.getBoundingClientRect();
+        //     var bounds = target.getBoundingClientRect();
+        //     xpos = bounds.left + (bounds.width / 2) - (tipBounds.width / 2);
+        //     ypos = bounds.top - 80;
+        //     this.style.left = xpos+"px";
+        //     this.style.top = ypos+"px";
+        //     tooltipBody.style.height = "20px";
+        //     tooltipBody.style.padding = "16px 30px";
+        //     window.setTimeout(function(){
+        //         tooltipTail.style.display = "block";
+        //         window.setTimeout(function(){
+        //             tooltipTail.style.bottom = "9px";
+        //         }, 100);
+        //     }, 200);
+        // }
+        // function hideTooltip(){
+        //     tooltipTail.style.bottom = "19px";
+        //     window.setTimeout(function(){
+        //         tooltipTail.style.display = "none";
+        //         window.setTimeout(function(){
+        //             tooltipBody.style.height = "0";
+        //             tooltipBody.style.padding = "0 30px";
+        //         }, 50);
+        //     }, 100);
+        // }
     }
 });
 </script>
