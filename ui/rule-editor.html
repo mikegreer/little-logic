@@ -74,124 +74,147 @@
 <script>
 var currentDocument = document.currentScript.ownerDocument;
 window.addEventListener('WebComponentsReady', function() {
-    var exampleRule = {
-        'ruleId': 1,
-        'ifColorIndex': 3,
-        'ifShapePoints': 5,
-        'direction': 270,
-        'sample': 3
-    }
-    var exampleLevelOptions = {
-        'colors': [
-            {
-                'hex': '#e74c3c',
-                'label': 'red'
-            },{
-                'hex': '#3498db',
-                'label': 'blue'
-            },{
-                'hex': '#2ecc71',
-                'label': 'green'
-            },{
-                'hex': '#e67e22',
-                'label': 'orange'
-            },{
-                'hex': '#f1c40f',
-                'label': 'yellow'
-            },{
-                'hex': '#8e44ad',
-                'label': 'purple'
-            }
-        ],
-        'shapes': [
-            {
-                'points': 3,
-                'label': 'triangle'
-            },{
-                'points': 4,
-                'label': 'square'
-            },{
-                'points': 5,
-                'label': 'pentagon'
-            },{
-                'points': 6,
-                'label': 'hexagon'
-            }
-        ],
-        'sounds': ['pulse-1', 'pulse-2', 'pulse-3', 'pulse-4', 'pulse-5', 'pulse-6', 'pulse-7', 'pulse-8', 'pulse-9']
-    }
-    function mapToText(rulePart, newValue){
-        if(rulePart === 'ifColorIndex'){
-            return "if pulse color is " + exampleLevelOptions.colors[newValue].label;
-        }
-        if(rulePart === 'ifShapePoints'){
-            var shapeMatch = exampleLevelOptions.shapes.filter(function ( obj ) {
-                return obj.points === newValue;
-            })[0];
-            return "if pulse shape is " + shapeMatch.label;
-        }
-        if(rulePart === 'direction'){
-            return "set pulse direction to " + newValue;
-        }
-        if(rulePart === 'sample'){
-            return "play sound " + exampleLevelOptions.sounds[newValue];
-        }
-    }
-    customElements.define('rule-editor', class extends HTMLElement {
-        constructor() {
-            super();
-            const t = currentDocument.querySelector('#rule-editor');
-            const instance = t.content.cloneNode(true);
-            this.appendChild(instance);
 
-            //TODO: refactor rules to have clearer labels
-            //pulsecolor, pulseshape, pulsedirection, pulsesound?
+    // var ruleModel = Object.create(HTMLElement.prototype);
+    //     ruleModel.logRule = function() {
+    //         console.log('rules!');
+    //     }
+
+    customElements.define('rule-editor', class extends HTMLElement {
+        get rule() {
+          return this.getAttribute('rule');
+        }
+        set rule(val) {
+          this['rule'] = val;
+          if (val) {
+            this.setAttribute('rule', val);
+          } else {
+            this.removeAttribute('rule');
+          }
+        }
+
+        connectedCallback() {
+            var rule = this._updateRules();
+
+            var exampleLevelOptions = {
+                'colors': [
+                    {
+                        'hex': '#e74c3c',
+                        'label': 'red'
+                    },{
+                        'hex': '#3498db',
+                        'label': 'blue'
+                    },{
+                        'hex': '#2ecc71',
+                        'label': 'green'
+                    },{
+                        'hex': '#e67e22',
+                        'label': 'orange'
+                    },{
+                        'hex': '#f1c40f',
+                        'label': 'yellow'
+                    },{
+                        'hex': '#8e44ad',
+                        'label': 'purple'
+                    }
+                ],
+                'shapes': [
+                    {
+                        'points': 3,
+                        'label': 'triangle'
+                    },{
+                        'points': 4,
+                        'label': 'square'
+                    },{
+                        'points': 5,
+                        'label': 'pentagon'
+                    },{
+                        'points': 6,
+                        'label': 'hexagon'
+                    }
+                ],
+                'sounds': ['pulse-1', 'pulse-2', 'pulse-3', 'pulse-4', 'pulse-5', 'pulse-6', 'pulse-7', 'pulse-8', 'pulse-9']
+            }
+
+            function mapToText(rulePart, newValue){
+                if(rulePart === 'ifColorIndex'){
+                    return "if pulse color is " + exampleLevelOptions.colors[newValue].label;
+                }
+                if(rulePart === 'ifShapePoints'){
+                    var shapeMatch = exampleLevelOptions.shapes.filter(function ( obj ) {
+                        return obj.points === newValue;
+                    })[0];
+                    return "if pulse shape is " + shapeMatch.label;
+                }
+                if(rulePart === 'direction'){
+                    return "set pulse direction to " + newValue;
+                }
+                if(rulePart === 'sample'){
+                    return "play sound " + exampleLevelOptions.sounds[newValue];
+                }
+            }
+
+            var tooltip = document.querySelector('rule-tooltip');
             var componentList = [
                 {
                     'selector': 'drop-picker',
                     'ruleAttribute': 'ifColorIndex',
                     'changeEvent': 'colorChange'
-                    //'ruleAttribute': 'pulsecolor'
                 },
                 {
                     'selector': 'shape-picker',
-                    'ruleAttribute': 'ifShapePoints',
+                    'ruleAttribute': 'points',
                     'changeEvent': 'shapeChange'
-//                    'ruleAttribute': 'pulseshape'
                 },
                 {
                     'selector': 'direction-picker',
                     'ruleAttribute': 'direction',
                     'changeEvent': 'directionChange'
-//                    'ruleAttribute': 'pulsedirection'
                 },
                 {
                     'selector': 'sample-picker',
                     'ruleAttribute': 'sample',
                     'changeEvent': 'sampleChange'
-//                    'ruleAttribute': 'pulsesound'
                 },
             ];
 
-            //todo: remove need for below two lines.
-            var shapePicker = document.querySelector('shape-picker');
-            shapePicker.setAttribute('points', exampleRule.ifShapePoints);
-
-            var tooltip = document.querySelector('rule-tooltip');
             componentList.forEach(function(obj) {
                 var element =  document.querySelector(obj.selector);
-                element.setAttribute(obj.ruleAttribute, exampleRule[obj.ruleAttribute]);
+                element.setAttribute(obj.ruleAttribute, rule[obj.ruleAttribute]);
                 element.addEventListener(obj.changeEvent, function(e){
-                    exampleRule[obj.ruleAttribute] = parseInt(e.detail.value);
-                    tooltip.label = mapToText(obj.ruleAttribute, exampleRule[obj.ruleAttribute]);
+                    rule[obj.ruleAttribute] = parseInt(e.detail.value);
+                    tooltip.label = mapToText(obj.ruleAttribute, rule[obj.ruleAttribute]);
                 });
                 element.addEventListener('mouseenter', function(e) {
-                    tooltip.label = mapToText(obj.ruleAttribute, exampleRule[obj.ruleAttribute]);
+                    tooltip.label = mapToText(obj.ruleAttribute, rule[obj.ruleAttribute]);
                 });
                 element.addEventListener('mouseleave', function(e) {
                     tooltip.label = "";
                 });
             });
+        }
+
+        static get observedAttributes() {return ['rule']; }
+
+        // Respond to attribute changes.
+        attributeChangedCallback(attr, oldValue, newValue) {
+            if (attr == 'rule') {
+                //console.log('rulechange');
+                //this.exampleRule = JSON.parse(newValue);
+                //console.log(this.exampleRule);
+                //_updateRules()
+            }
+        }
+
+        _updateRules() {
+            return JSON.parse(this['rule']);
+        }
+
+        constructor() {
+            super();
+            const t = currentDocument.querySelector('#rule-editor');
+            const instance = t.content.cloneNode(true);
+            this.appendChild(instance);
         }
     });
 
