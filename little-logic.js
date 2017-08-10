@@ -1,15 +1,37 @@
 var ruleEditor = document.querySelector('rule-editor');
+
+//set default rule
 var rule = {
-    'ruleId': 1,
-    'ifColorIndex': 1,
-    'points': 6,
-    'direction': 90,
-    'sample': 8
+    'ruleId': 0,
+    'dropcolor': 0,
+    'points': 3,
+    'direction': 0,
+    'sample': 0
 }
 ruleEditor.setAttribute('rule', JSON.stringify(rule));
 
-//window.addEventListener('WebComponentsReady', function() {
-    //pass level params (lists of available options)
+document.querySelector('#rule1').addEventListener('click', function(e) {
+    ruleEditor.setAttribute('rule', JSON.stringify(
+        {
+        'ruleId': 1,
+        'dropcolor': 4,
+        'points': 3,
+        'direction': 180,
+        'sample': 8
+    }));
+});
 
-    //control opening of rule editor based on particular rule and level options
-//});
+document.querySelector('#rule2').addEventListener('click', function(e) {
+    ruleEditor.setAttribute('rule', JSON.stringify(
+        {
+        'ruleId': 2,
+        'dropcolor': 5,
+        'points': 5,
+        'direction': 225,
+        'sample': 4
+    }));
+});
+
+ruleEditor.addEventListener('ruleChange', function(e){
+    console.log(e.detail.value);
+});

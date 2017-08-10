@@ -27,14 +27,14 @@ var dropPickerTemplate = document.currentScript.ownerDocument.querySelector('#dr
 customElements.define('drop-picker', class extends HTMLElement {
 
     get dropcolor() {
-      return this.getAttribute('dropColor');
+      return this.getAttribute('dropcolor');
     }
 
     set dropcolor(val) {
       if (val) {
-        this.setAttribute('dropColor', val);
+        this.setAttribute('dropcolor', val);
       } else {
-        this.removeAttribute('dropColor');
+        this.removeAttribute('dropcolor');
       }
     }
 

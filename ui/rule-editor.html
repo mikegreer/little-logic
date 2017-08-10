@@ -75,11 +75,6 @@
 var currentDocument = document.currentScript.ownerDocument;
 window.addEventListener('WebComponentsReady', function() {
 
-    // var ruleModel = Object.create(HTMLElement.prototype);
-    //     ruleModel.logRule = function() {
-    //         console.log('rules!');
-    //     }
-
     customElements.define('rule-editor', class extends HTMLElement {
         get rule() {
           return this.getAttribute('rule');
@@ -93,9 +88,21 @@ window.addEventListener('WebComponentsReady', function() {
           }
         }
 
-        connectedCallback() {
-            var rule = this._updateRules();
+        static get observedAttributes() {return ['rule']; }
 
+        // Respond to attribute changes.
+        attributeChangedCallback(attr, oldValue, newValue) {
+            if (attr == 'rule') {
+                this._updateRules();
+            }
+        }
+
+        connectedCallback() {
+//          this._updateRules();
+        }
+
+        _updateRules() {
+            var rule = JSON.parse(this['rule']);
             var exampleLevelOptions = {
                 'colors': [
                     {
@@ -137,10 +144,10 @@ window.addEventListener('WebComponentsReady', function() {
             }
 
             function mapToText(rulePart, newValue){
-                if(rulePart === 'ifColorIndex'){
+                if(rulePart === 'dropcolor'){
                     return "if pulse color is " + exampleLevelOptions.colors[newValue].label;
                 }
-                if(rulePart === 'ifShapePoints'){
+                if(rulePart === 'points'){
                     var shapeMatch = exampleLevelOptions.shapes.filter(function ( obj ) {
                         return obj.points === newValue;
                     })[0];
@@ -158,7 +165,7 @@ window.addEventListener('WebComponentsReady', function() {
             var componentList = [
                 {
                     'selector': 'drop-picker',
-                    'ruleAttribute': 'ifColorIndex',
+                    'ruleAttribute': 'dropcolor',
                     'changeEvent': 'colorChange'
                 },
                 {
@@ -178,36 +185,38 @@ window.addEventListener('WebComponentsReady', function() {
                 },
             ];
 
+            function updateTooltip(attribute){
+                tooltip.label = mapToText(attribute, rule[attribute]);
+            }
+
+            //TODO: when 'rule' changes, broadcast ruleChange event.
+            function updateRule(property, value) {
+                rule[property] = parseInt(value);
+                console.log(rule);
+                var that = document.querySelector('rule-editor');
+                var event = new CustomEvent('ruleChange', {
+                    cancelable: true,
+                    detail: rule
+                });
+                that.dispatchEvent(event);
+            }
+
             componentList.forEach(function(obj) {
                 var element =  document.querySelector(obj.selector);
                 element.setAttribute(obj.ruleAttribute, rule[obj.ruleAttribute]);
                 element.addEventListener(obj.changeEvent, function(e){
-                    rule[obj.ruleAttribute] = parseInt(e.detail.value);
-                    tooltip.label = mapToText(obj.ruleAttribute, rule[obj.ruleAttribute]);
+                    updateRule(obj.ruleAttribute, e.detail.value);
                 });
                 element.addEventListener('mouseenter', function(e) {
-                    tooltip.label = mapToText(obj.ruleAttribute, rule[obj.ruleAttribute]);
+                    updateTooltip(obj.ruleAttribute);
                 });
                 element.addEventListener('mouseleave', function(e) {
                     tooltip.label = "";
                 });
+                element.addEventListener('click', function(e) {
+                    updateTooltip(obj.ruleAttribute);
+                });
             });
-        }
-
-        static get observedAttributes() {return ['rule']; }
-
-        // Respond to attribute changes.
-        attributeChangedCallback(attr, oldValue, newValue) {
-            if (attr == 'rule') {
-                //console.log('rulechange');
-                //this.exampleRule = JSON.parse(newValue);
-                //console.log(this.exampleRule);
-                //_updateRules()
-            }
-        }
-
-        _updateRules() {
-            return JSON.parse(this['rule']);
         }
 
         constructor() {
