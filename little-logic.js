@@ -3,8 +3,8 @@ var rule = {
     'ruleId': 1,
     'ifColorIndex': 1,
     'points': 6,
-    'direction': 90,
-    'sample': 8
+    'direction': 0,
+    'sample': 0
 }
 ruleEditor.setAttribute('rule', JSON.stringify(rule));
 
