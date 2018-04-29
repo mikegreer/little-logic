@@ -1,3 +1,8 @@
+# bugs
+----
+Set default rule object in rule-editor
+
+
 # Levels
 ----
 These probably need lots of repetition of the concept, but levels of complexity could be:
