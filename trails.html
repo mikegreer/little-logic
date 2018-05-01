@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <style>
+            body{
+                font-family: "europa";
+                margin: 0;
+                height: 100vh;
+                background-color: #ecf0f1;
+            }
+            .container{
+                display: flex;
+                align-items: left;
+                justify-content: center;
+                height: 100%;
+                margin-top: -4vh;
+                flex-direction: row;
+                box-sizing: border-box;
+                padding: 100px;
+            }
+            .noselect {
+              -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none; /* Safari */
+                 -khtml-user-select: none; /* Konqueror HTML */
+                   -moz-user-select: none; /* Firefox */
+                    -ms-user-select: none; /* Internet Explorer/Edge */
+                        user-select: none; /* Non-prefixed version, currently
+                                              supported by Chrome and Opera */
+            }
+        </style>
+    </head>
+    <body>
+
+    <div class="container">
+        <canvas id="trails"></canvas>
+    </div>
+    <script type="text/javascript" src="trails.js"></script>
+    </body>
+</html>
