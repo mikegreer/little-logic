@@ -189,10 +189,8 @@ window.addEventListener('WebComponentsReady', function() {
                 tooltip.label = mapToText(attribute, rule[attribute]);
             }
 
-            //TODO: when 'rule' changes, broadcast ruleChange event.
             function updateRule(property, value) {
                 rule[property] = parseInt(value);
-                console.log(rule);
                 var that = document.querySelector('rule-editor');
                 var event = new CustomEvent('ruleChange', {
                     cancelable: true,
@@ -204,20 +202,10 @@ window.addEventListener('WebComponentsReady', function() {
             componentList.forEach(function(obj) {
                 var element =  document.querySelector(obj.selector);
                 element.setAttribute(obj.ruleAttribute, rule[obj.ruleAttribute]);
-                element.addEventListener(obj.changeEvent, function(e){
-                    updateRule(obj.ruleAttribute, e.detail.value);
-                });
-                element.addEventListener('mouseenter', function(e) {
-                    updateTooltip(obj.ruleAttribute);
-                });
-                element.addEventListener('mouseleave', function(e) {
-                    tooltip.label = "";
-                });
-                element.addEventListener('click', function(e) {
-                    updateTooltip(obj.ruleAttribute);
-                });
+                updateRule(obj.ruleAttribute, rule[obj.ruleAttribute]);
             });
         }
+
 
         constructor() {
             super();
